@@ -11,7 +11,9 @@ head(merged_scenarios)
 
 moose_baseline <- st_read("moose4.shp")
 
-#View(moose_baseline)
+
+
+
 #----- plot dominant habitat types in study area-----------------
 #subset to studyarea
 moose_studyarea <- moose_baseline[moose_baseline$studyarea != 0, ]
@@ -89,12 +91,12 @@ ggplot() +
   ) +
   scale_fill_manual(
     values = c(
-      "Developed areas" = "#bdbdbd",  # grey
-      "Agriculture"     = "#d9d976",  # yellow-green
-      "Forest"          = "#1b7837",  # dark green
-      "Open terrain"    = "#e69f00",  # strong ochre/orange (high contrast)
-      "Peatland"        = "#8c6d31",  # brown
-      "Freshwater"      = "#2b83ba"   # blue
+      "Developed areas" = "#bdbdbd",  
+      "Agriculture"     = "#d9d976",  
+      "Forest"          = "#1b7837",  
+      "Open terrain"    = "#e69f00",  
+      "Peatland"        = "#8c6d31", 
+      "Freshwater"      = "#2b83ba"   
     ),
     name = "Dominant habitat",
     drop = FALSE
@@ -403,7 +405,6 @@ pie_df <- dplyr::bind_rows(prop_det, prop_samp) %>%
     metric = factor(metric, levels = c("Detections", "Sampled cells"))
   )
 
-library(dplyr)
 
 pie_df <- pie_df %>%
   group_by(scenario_type, metric) %>%
@@ -414,9 +415,6 @@ pie_df <- pie_df %>%
   ) %>%
   ungroup()
 
-
-library(ggplot2)
-library(ggplot2)
 
 ggplot(
   pie_df,
@@ -466,7 +464,7 @@ ggplot(
 
 pie_df <- pie_df %>%
   mutate(
-    # this order controls stacking AND label placement
+ 
     location = factor(location, levels = c("Inside corridor", "Outside corridor")),
     metric = factor(metric, levels = c("Detections", "Sampled cells")),
     label = scales::percent(pct, accuracy = 1)
@@ -476,7 +474,7 @@ ggplot(pie_df, aes(x = metric, y = pct, fill = location)) +
   geom_col(width = 1, color = "white") +
   geom_text(
     aes(label = label),
-    position = position_stack(vjust = 0.5),  # <-- key
+    position = position_stack(vjust = 0.5), 
     color = "black",
     size = 3
   ) +
@@ -505,8 +503,8 @@ ggplot(pie_df, aes(x = metric, y = pct, fill = location)) +
     aes(label = label),
     position = position_stack(vjust = 0.5),
     color = "black",
-    size = 4.2,            # larger labels (try 4–5)
-    fontface = "bold"      # bold percentages
+    size = 4.2,            
+    fontface = "bold"     
   ) +
   coord_polar(theta = "y") +
   facet_wrap(~ scenario_type) +
@@ -549,7 +547,7 @@ ggplot(pie_df, aes(x = metric, y = pct, fill = location)) +
     fontface = "bold"
   ) +
   coord_polar(theta = "y") +
-  facet_wrap(~ scenario_type) +   # will now use scenario_order
+  facet_wrap(~ scenario_type) +   
   scale_fill_manual(values = c("Inside corridor" = "#3B8BC4",
                                "Outside corridor" = "#9ECAE1")) +
   theme_void() +
@@ -565,7 +563,7 @@ ggplot(pie_df, aes(x = metric, y = pct, fill = location)) +
     legend.text = element_text(size = 11),
     legend.title = element_text(size = 11)
   )
-# install.packages("ggtext")  # if needed
+
 library(ggtext)
 
 ggplot(pie_df, aes(x = metric, y = pct, fill = location)) +
@@ -602,26 +600,18 @@ ggplot(pie_df, aes(x = metric, y = pct, fill = location)) +
     legend.text = element_text(size = 11)
   )
 
-#-------Mean total detections per total visits -----
-#scenario_colors <- c(
-#  "baseline"   = "#66C2A5",
-#  "strava"     = "#FC8D62",
-#  "core.sites" = "#8DA0CB",
-#  "targeted"   = "#E78AC3",
-#  "5050"       = "#A6D854",
-#  "clustered"  = "#FFD92F"
-#)
+
 
 scenario_order <- c("baseline", "strava", "core.sites", "targeted", "5050", "clustered")
 
-# These are the colors you want (from your palette)
+
 scenario_colors <- c(
-  baseline   = "#FC8D62",  # salmon
-  strava     = "#B3A200",  # olive/gold (adjust if your exact strava bar is different)
-  core.sites = "#00BA38",  # bright green
-  targeted   = "#00BFC4",  # cyan/teal
-  `5050`     = "#619CFF",  # blue
-  clustered  = "#F564E3"   # magenta
+  baseline   = "#FC8D62",  
+  strava     = "#B3A200",  
+  core.sites = "#00BA38",  
+  targeted   = "#00BFC4",  
+  `5050`     = "#619CFF",  
+  clustered  = "#F564E3"   
 )
 
 
@@ -651,7 +641,7 @@ ggplot(detections_visits_all,
   geom_col(position = position_dodge(width = 0.8),
            width = 0.7, color = "black") +
   scale_fill_manual(values = scenario_colors,
-                    breaks = scenario_order,   # forces legend order
+                    breaks = scenario_order,  
                     name = "Scenario type") +
   theme_bw(base_size = 14) +
   labs(title = "Mean Total Detections per Total Visits",
@@ -939,7 +929,7 @@ coord_cartesian(ylim = c(0, 1.6))
 ggplot(rmse_diff,
        aes(x = scenario_type, y = rmse_drop, fill = scenario_type)) +
   geom_col(alpha = 0.8) +
-  coord_cartesian(ylim = c(0, 1.7)) +   # <<< SAME SCALE
+  coord_cartesian(ylim = c(0, 1.7)) +   
   theme_minimal() +
   labs(
     title = "Reduction in RMSE from Low to High Sampling Effort",
@@ -954,7 +944,7 @@ ggplot(rmse_diff,
 ggplot(rmse_diff_p,
        aes(x = scenario_type, y = rmse_drop, fill = scenario_type)) +
   geom_col(alpha = 0.8) +
-  coord_cartesian(ylim = c(0, 1.7)) +   # <<< SAME SCALE
+  coord_cartesian(ylim = c(0, 1.7)) +   
   theme_minimal() +
   labs(
     title = "Reduction in RMSE from Low to High Detection Probability",
@@ -969,7 +959,7 @@ ggplot(rmse_diff_p,
 
 #statistical model
 
-#treating p_detect and total_visits as continuous numerical variables, kind off wrong... 
+#treating p_detect and total_visits as continuous numerical variables
 mod <- lm(rmse ~ p_detect + total_visits + scenario_type, data = merged_scenarios)
 summary(mod)
 
@@ -1031,9 +1021,9 @@ ggplot(plot_data,
   ) +
   scale_fill_manual(
     values = c(
-      "1" = "#5AA1D6",   # darker pastel blue
-      "2" = "#7BBCE8",   # medium pastel blue
-      "3" = "#A6D1F0"    # light pastel blue
+      "1" = "#5AA1D6",   
+      "2" = "#7BBCE8",  
+      "3" = "#A6D1F0"    
     ),
     labels = c(
       "1 = Low detection, low effort",
@@ -1048,7 +1038,7 @@ ggplot(plot_data,
 
 ggplot(plot_data, aes(x = setup_num, y = rmse, fill = setup_num)) +
   geom_col() +
-  facet_wrap(~ scenario_type) +   # <- remove scales="free_y"
+  facet_wrap(~ scenario_type) +   
   theme_bw(base_size = 13) +
   labs(
     title = "RMSE Across Effort and Detection Conditions",
@@ -1207,7 +1197,7 @@ plot_df <- merged_scenarios %>%
   summarise(bias = mean(bias, na.rm = TRUE), .groups = "drop") %>%
   mutate(
     bias_level = cut(bias, breaks = bias_breaks, labels = bias_labels, right = TRUE),
-    bias_level = factor(bias_level, levels = bias_labels)  # keep legend ordered
+    bias_level = factor(bias_level, levels = bias_labels) 
   )
 
 ggplot(plot_df, aes(x = p_detect, y = total_visits, fill = bias_level)) +
@@ -1252,9 +1242,9 @@ ggplot(plot_df, aes(x = p_detect, y = total_visits, fill = bias_level)) +
   theme_bw() +
   scale_fill_manual(
     values = c(
-      "Underestimating" = "#D7191C",  # red
-      "Close to 0"      = "#F7F7F7",  # light/neutral
-      "Overestimating"  = "#2C7BB6"   # blue
+      "Underestimating" = "#D7191C",  
+      "Close to 0"      = "#F7F7F7",  
+      "Overestimating"  = "#2C7BB6"  
     )
   ) +
   labs(
@@ -1282,7 +1272,7 @@ plot_df <- merged_scenarios %>%
   dplyr::group_by(species, scenario_type, total_visits, p_detect) %>%
   dplyr::summarise(bias = mean(bias, na.rm = TRUE), .groups = "drop")
 
-# clamp scale to avoid outliers washing out the colors
+
 lims <- stats::quantile(plot_df$bias, probs = c(0.01, 0.99), na.rm = TRUE)
 m <- max(abs(lims))
 bmin <- -m
@@ -1294,11 +1284,11 @@ ggplot2::ggplot(plot_df, ggplot2::aes(x = p_detect, y = total_visits, fill = bia
   ggplot2::theme_bw() +
   ggplot2::scale_fill_gradientn(
     colours = c(
-      "#67000D",  # dark red
-      "#FCAE91",  # light red
-      "#00A650",  # green near 0
-      "#9ECAE1",  # light blue
-      "#08306B"   # dark blue
+      "#67000D",  
+      "#FCAE91",  
+      "#00A650", 
+      "#9ECAE1",  
+      "#08306B"   
     ),
     values = scales::rescale(c(bmin, -eps, 0, eps, bmax)),
     limits = c(bmin, bmax),
@@ -1325,7 +1315,7 @@ plot_df <- merged_scenarios %>%
   dplyr::group_by(species, scenario_type, total_visits, p_detect) %>%
   dplyr::summarise(bias = mean(bias, na.rm = TRUE), .groups = "drop")
 
-# clamp scale to avoid outliers washing out the colors
+
 lims <- stats::quantile(plot_df$bias, probs = c(0.01, 0.99), na.rm = TRUE)
 m <- max(abs(lims))
 bmin <- -m
@@ -1398,12 +1388,12 @@ merged_scenarios %>%
   facet_grid(species ~ scenario_type) +
   scale_fill_manual(
     values = c(
-      "≤ 0.20" = "#006837" , #(medium green)
-      "≤ 0.25" = "#8BC34A", #(yellow-green)
-      "≤ 0.30" = "#FFEB3B", #(pastel yellow)
-      "≤ 0.40" = "#FB8C00", #(orange)
-      "≤ 0.50" = "#E53935", #(orange-red)
-      "> 0.50" =  "#7F0000" #(deep dark red)
+      "≤ 0.20" = "#006837" , 
+      "≤ 0.25" = "#8BC34A", 
+      "≤ 0.30" = "#FFEB3B", 
+      "≤ 0.40" = "#FB8C00", 
+      "≤ 0.50" = "#E53935", 
+      "> 0.50" =  "#7F0000" 
     ),
     name = "RMSE"
   ) +
@@ -1418,7 +1408,7 @@ merged_scenarios %>%
 #----Model performance, stability?------
 
 ###
-# p_rmse summary table (no colors needed here, but keep scenario order)
+# p_rmse summary table 
 p_rmse_summary <- merged_scenarios %>%
   group_by(scenario_type) %>%
   summarise(
@@ -1430,7 +1420,7 @@ p_rmse_summary <- merged_scenarios %>%
 
 print(p_rmse_summary)
 
-# Detection probability RMSE (boxplot) — USE scenario_colors
+# Detection probability RMSE 
 ggplot(merged_scenarios,
        aes(x = scenario_type, y = p_rmse, fill = scenario_type)) +
   geom_boxplot(outlier.alpha = 0.3) +
@@ -1444,7 +1434,7 @@ ggplot(merged_scenarios,
   theme(legend.position = "none")
 
 
-# Fail rate (mean) — USE scenario_colors
+# Fail rate 
 merged_scenarios %>%
   group_by(scenario_type) %>%
   summarise(mean_fail_rate = mean(fail_rate, na.rm = TRUE), .groups = "drop") %>%
@@ -1460,18 +1450,14 @@ merged_scenarios %>%
   theme(legend.position = "none")
 
 
-# Error types (stacked) — scenario_colors CANNOT be used here as-is
-# because fill is mapped to top_error, not scenario_type.
-# What you *can* do is:
-#   A) keep scenario order on x (already handled by factor levels), OR
-#   B) facet by scenario_type and use a separate palette for top_error.
+# Error types 
 
 error_summary <- merged_scenarios %>%
   filter(!is.na(top_error)) %>%
   group_by(scenario_type, top_error) %>%
   summarise(n = n(), .groups = "drop")
 
-# Option A (keep as stacked by error, ordered scenarios on x)
+
 ggplot(error_summary,
        aes(x = scenario_type, y = n, fill = top_error)) +
   geom_col(position = "stack") +
@@ -1493,7 +1479,7 @@ library(tidyr)
 
 error_overview_top <- merged_scenarios %>%
   filter(n_failed > 0, !is.na(top_error)) %>%
-  count(scenario_type, top_error, wt = n_failed, name = "n_failed") %>%  # sum failures
+  count(scenario_type, top_error, wt = n_failed, name = "n_failed") %>%  
   arrange(desc(n_failed))
 
 error_overview_top
